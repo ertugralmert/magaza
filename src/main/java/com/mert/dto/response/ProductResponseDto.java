@@ -12,6 +12,6 @@ public class ProductResponseDto {
     private Double price;
     private String mainImageUrl;
     private List<String> otherImageUrls;
-    private Long brandId;
-    private Long modelId;
+    private String brandName;  // Yeni eklenen alan
+    private String modelName;  // Yeni eklenen alan
 }
