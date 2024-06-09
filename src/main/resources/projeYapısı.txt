@@ -1,0 +1,39 @@
+src
+ └── main
+     └── java
+         └── com
+             └── mert
+                 ├── controller
+                 │    ├── BrandController.java
+                 │    ├── ModelController.java
+                 │    ├── ProductFeatureController.java
+                 │    └── base
+                 │         └── BaseController.java
+                 ├── dto
+                 │    ├── request
+                 │    │    ├── BrandSaveRequestDto.java
+                 │    │    ├── ModelSaveRequestDto.java
+                 │    │    └── ProductFeatureSaveRequestDto.java
+                 │    └── response
+                 │         ├── BrandResponseDto.java
+                 │         ├── ModelResponseDto.java
+                 │         └── ProductFeatureResponseDto.java
+                 ├── entity
+                 │    ├── Brand.java
+                 │    ├── Model.java
+                 │    └── ProductFeature.java
+                 ├── mapper
+                 │    ├── BrandMapper.java
+                 │    ├── ModelMapper.java
+                 │    └── ProductFeatureMapper.java
+                 ├── repository
+                 │    ├── BrandRepository.java
+                 │    ├── ModelRepository.java
+                 │    └── ProductFeatureRepository.java
+                 ├── service
+                 │    ├── BrandService.java
+                 │    ├── ModelService.java
+                 │    ├── ProductFeatureService.java
+                 │    └── base
+                 │         └── BaseService.java
+                 └── MertApplication.java
