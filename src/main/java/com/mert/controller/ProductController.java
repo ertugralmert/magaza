@@ -56,8 +56,16 @@ public class ProductController implements BaseController<ProductSaveRequestDto, 
     }
 
     @GetMapping(FILTER)
-    public ResponseEntity<List<ProductResponseDto>> findByFeature(@RequestParam String featureName, @RequestParam String category) {
-        List<ProductResponseDto> products = productService.findByFeature(featureName, category);
+    public ResponseEntity<List<ProductResponseDto>> findByFeature(
+            @RequestParam(required = false) String featureName,
+            @RequestParam String category
+    ) {
+        List<ProductResponseDto> products;
+        if (featureName == null) {
+            products = productService.findByCategory(category);
+        } else {
+            products = productService.findByFeature(featureName, category);
+        }
         return ResponseEntity.ok(products);
     }
 }

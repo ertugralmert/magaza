@@ -11,9 +11,11 @@ import org.mapstruct.factory.Mappers;
 public interface ProductMapper {
     ProductMapper INSTANCE = Mappers.getMapper(ProductMapper.class);
 
-    @Mapping(target = "brandId", ignore = true)
-    @Mapping(target = "modelId", ignore = true)
+    @Mapping(target = "brand", ignore = true) // Brand nesnesi DTO'dan doğrudan alınmaz, service katmanında set edilir
+    @Mapping(target = "model", ignore = true) // Model nesnesi DTO'dan doğrudan alınmaz, service katmanında set edilir
     Product fromProductSaveRequestDto(ProductSaveRequestDto dto);
 
+    @Mapping(target = "brandName", source = "brand.name")
+    @Mapping(target = "modelName", source = "model.name")
     ProductResponseDto toProductResponseDto(Product product);
 }

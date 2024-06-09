@@ -3,6 +3,7 @@ package com.mert.service.base;
 import com.mert.dto.request.BrandSaveRequestDto;
 import com.mert.dto.response.BrandResponseDto;
 import com.mert.entity.Brand;
+import com.mert.exception.ProductManagementException;
 import com.mert.mapper.BrandMapper;
 import com.mert.repository.BrandRepository;
 import com.mert.service.BrandService;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.mert.exception.ErrorType.CONFLICT_ERROR;
+
 @Service
 @RequiredArgsConstructor
 public class BrandServiceImpl implements BrandService {
@@ -20,6 +23,9 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     public BrandResponseDto save(BrandSaveRequestDto dto) {
+        if (brandRepository.existsByNameIgnoreCase(dto.getName())) {
+            throw new ProductManagementException(CONFLICT_ERROR);
+        }
         Brand brand = brandMapper.fromBrandSaveRequestDto(dto);
         return brandMapper.toBrandResponseDto(brandRepository.save(brand));
     }

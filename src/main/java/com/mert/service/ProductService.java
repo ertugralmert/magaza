@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface ProductService extends BaseService<ProductSaveRequestDto, ProductResponseDto, Long> {
     List<ProductResponseDto> findByFeature(String featureName, String category);
+    List<ProductResponseDto> findByCategory(String category);
+
 }

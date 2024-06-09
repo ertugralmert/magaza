@@ -5,6 +5,7 @@ import com.mert.dto.response.ProductResponseDto;
 import com.mert.entity.Brand;
 import com.mert.entity.Model;
 import com.mert.entity.Product;
+import com.mert.exception.ErrorType;
 import com.mert.exception.ProductManagementException;
 import com.mert.mapper.ProductMapper;
 import com.mert.repository.BrandRepository;
@@ -30,9 +31,13 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductResponseDto save(ProductSaveRequestDto dto) {
-        Brand brand = brandRepository.findByName(dto.getBrandName())
+        if (productRepository.existsByNameIgnoreCase(dto.getName())) {
+            throw new ProductManagementException(ErrorType.CONFLICT_ERROR);
+        }
+
+        Brand brand = brandRepository.findByNameIgnoreCase(dto.getBrandName())
                 .orElseThrow(() -> new ProductManagementException(BAD_REQUEST_ERROR));
-        Model model = modelRepository.findByName(dto.getModelName())
+        Model model = modelRepository.findByNameIgnoreCase(dto.getModelName())
                 .orElseThrow(() -> new ProductManagementException(BAD_REQUEST_ERROR));
 
         Product product = productMapper.fromProductSaveRequestDto(dto);
@@ -47,9 +52,9 @@ public class ProductServiceImpl implements ProductService {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ProductManagementException(DATA_NOT_FOUND));
 
-        Brand brand = brandRepository.findByName(dto.getBrandName())
+        Brand brand = brandRepository.findByNameIgnoreCase(dto.getBrandName())
                 .orElseThrow(() -> new ProductManagementException(BAD_REQUEST_ERROR));
-        Model model = modelRepository.findByName(dto.getModelName())
+        Model model = modelRepository.findByNameIgnoreCase(dto.getModelName())
                 .orElseThrow(() -> new ProductManagementException(BAD_REQUEST_ERROR));
 
         product.setName(dto.getName());
@@ -87,6 +92,13 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductResponseDto> findByFeature(String featureName, String category) {
         return productRepository.findByFeature(featureName, category).stream()
+                .map(productMapper::toProductResponseDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProductResponseDto> findByCategory(String category) {
+        return productRepository.findByCategory(category).stream()
                 .map(productMapper::toProductResponseDto)
                 .collect(Collectors.toList());
     }

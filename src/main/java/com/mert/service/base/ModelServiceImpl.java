@@ -3,6 +3,7 @@ package com.mert.service.base;
 import com.mert.dto.request.ModelSaveRequestDto;
 import com.mert.dto.response.ModelResponseDto;
 import com.mert.entity.Model;
+import com.mert.exception.ProductManagementException;
 import com.mert.mapper.ModelMapper;
 import com.mert.repository.ModelRepository;
 import com.mert.service.ModelService;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.mert.exception.ErrorType.CONFLICT_ERROR;
+
 @Service
 @RequiredArgsConstructor
 public class ModelServiceImpl implements ModelService {
@@ -20,6 +23,9 @@ public class ModelServiceImpl implements ModelService {
 
     @Override
     public ModelResponseDto save(ModelSaveRequestDto dto) {
+        if (modelRepository.existsByNameIgnoreCase(dto.getName())) {
+            throw new ProductManagementException(CONFLICT_ERROR);
+        }
         Model model = modelMapper.fromModelSaveRequestDto(dto);
         return modelMapper.toModelResponseDto(modelRepository.save(model));
     }
